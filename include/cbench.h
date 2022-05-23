@@ -18,6 +18,18 @@ cbench* cbench_start(cbench *b) {
 }
 
 static inline
+int cbench_is_done(cbench *b) {
+	if (b->left-- != 0) // hot-path
+		return 0;
+	extern int cbench__cold_path(cbench *b);
+	return cbench__cold_path(b);
+}
+
+#define CBENCH_LOOP(b) \
+	for (cbench* _cbench = cbench_start(b); !cbench_is_done(_cbench); )
+
+#ifdef CBENCH_IMPLEMENTATION
+
 int cbench__cold_path(cbench *b) {
 	struct timespec toc;
 	clock_gettime(CLOCK_MONOTONIC, &toc);
@@ -41,12 +53,4 @@ int cbench__cold_path(cbench *b) {
 	return 1;
 }
 
-static inline
-int cbench_is_done(bench *b) {
-	if (b->left-- != 0) // hot-path
-		return 0;
-	return cbench__cold_patch(b);
-}
-
-#define CBENCH_LOOP(b) \
-	for (cbench* _cbench = cbench_start(b); !cbench_done(_cbench); )
+#endif

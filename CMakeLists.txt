@@ -10,8 +10,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-add_library(cbench STATIC
-)
+add_library(cbench STATIC src/cbench.c)
 
 target_include_directories(cbench PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_link_libraries(cbench PUBLIC)

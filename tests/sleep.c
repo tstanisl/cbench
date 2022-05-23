@@ -1,6 +1,7 @@
 #include <cbench.h>
 
 #include <unistd.h>
+#include <stdio.h>
 
 int main(void) {
 	cbench b = { .min_time = 1 };
@@ -11,7 +12,7 @@ int main(void) {
 	}
 
 	printf("%f: ", b.unit_time);
-	if (0.95 * usec < b.unit_time && b.unit_time < 1.05 * usec)
+	if (0.95 * usec * 1e-6 < b.unit_time && b.unit_time < 1.05 * usec * 1e-6)
 		puts("- passed");
 	else
 		puts("- failed");
