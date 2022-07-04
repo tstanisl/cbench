@@ -2,7 +2,7 @@
 
 #include <time.h>
 
-enum { CBENCH_SAMPLES = 6 };
+enum { CBENCH_SAMPLES = 5 };
 
 typedef struct {
 	// CONFIGURATION
@@ -99,6 +99,11 @@ cbench__params cbench__estimate(size_t K, size_t n[static K], double t[static K]
 	// compute unbiased estimator of variance
 	sigma2 /= K - 2;
 
+#if 0
+	for (size_t i = 0; i < K; ++i)
+		printf(" (%zu,%g)", n[i], t[i]);
+	printf(" - c=%g m=%g +/-%g%%\n", c, m, sqrt(sigma2*K/det)/m*100);
+#endif
 	return (cbench__params) {
 		.m = m,
 		.c = c,
@@ -142,7 +147,7 @@ int cbench__cold_path(cbench *b) {
 		return 1;
 	}
 
-	b->count_ = 3 * b->count_ / 2 + 1;
+	b->count_ = 2 * b->count_ / 1 + 1;
 	b->left_ = b->count_ - 1;
 	clock_gettime(CLOCK_MONOTONIC, &b->ts_);
 	return 0;
